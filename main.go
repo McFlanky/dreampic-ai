@@ -23,7 +23,8 @@ func main() {
 	router.Use(handler.WithUser)
 
 	router.Handle("/*", http.StripPrefix("/", http.FileServer(http.FS(FS))))
-	router.Get("/", handler.MakeHandler(handler.HandleHomeIndex))
+	router.Get("/", handler.Make(handler.HandleHomeIndex))
+	router.Get("/login", handler.Make(handler.HandleLogin))
 
 	port := os.Getenv("HTTP_LISTEN_ADDR")
 	slog.Info("Starting server on ", "port", port)

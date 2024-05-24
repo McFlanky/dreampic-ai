@@ -1,9 +1,11 @@
 package handler
 
 import (
-	"fmt"
+	"context"
 	"net/http"
 	"strings"
+
+	"github.com/McFlanky/dreampic-ai/types"
 )
 
 func WithUser(next http.Handler) http.Handler {
@@ -12,8 +14,13 @@ func WithUser(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		fmt.Println("from the with user middleware")
-		next.ServeHTTP(w, r)
+		user := types.AuthenticatedUser{
+			Email:      "agg@gmail.com",
+			IsLoggedIn: true,
+		}
+		ctx := context.WithValue(r.Context(), types.UserContextKey, user)
+		next.ServeHTTP(w, r.WithContext(ctx))
+
 	}
 	return http.HandlerFunc(fn)
 }
