@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/McFlanky/dreampic-ai/handler"
-	"github.com/McFlanky/dreampic-ai/pkg/supabase"
+	"github.com/McFlanky/dreampic-ai/pkg/sb"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 )
@@ -37,5 +37,5 @@ func initEverything() error {
 	if err := godotenv.Load(); err != nil {
 		return err
 	}
-	return supabase.Init()
+	return sb.Init()
 }
