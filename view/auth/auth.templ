@@ -124,3 +124,11 @@ templ SignupForm(params SignupParams, errors SignupErrors) {
 		<button type="submit" class="btn btn-primary w-full">Login <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
 	</form>
 }
+
+templ CallbackScript() {
+	<script>
+		var url = window.location.href;
+		var newURL = url.replace("#", "?");
+		window.location = newURL;
+	</script>
+}

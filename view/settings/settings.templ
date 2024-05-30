@@ -1,0 +1,10 @@
+package settings
+
+import "github.com/McFlanky/dreampic-ai/view/layout"
+import "github.com/McFlanky/dreampic-ai/types"
+
+templ Index(user types.AuthenticatedUser) {
+	@layout.App(true) {
+		<div>hello { user.Email }</div>
+	}
+}
