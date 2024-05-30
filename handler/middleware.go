@@ -3,10 +3,12 @@ package handler
 import (
 	"context"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/McFlanky/dreampic-ai/pkg/sb"
 	"github.com/McFlanky/dreampic-ai/types"
+	"github.com/gorilla/sessions"
 )
 
 func WithoutAuth(next http.Handler) http.Handler {
@@ -30,18 +32,18 @@ func WithUser(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
-		cookie, err := r.Cookie("at")
+		store := sessions.NewCookieStore([]byte(os.Getenv("SESSION_SECRET")))
+		session, err := store.Get(r, sessionUserKey)
 		if err != nil {
 			next.ServeHTTP(w, r)
 			return
 		}
-
-		resp, err := sb.Client.Auth.User(r.Context(), cookie.Value)
+		accessToken := session.Values[sessionAccessTokenKey]
+		resp, err := sb.Client.Auth.User(r.Context(), accessToken.(string))
 		if err != nil {
 			next.ServeHTTP(w, r)
 			return
 		}
-
 		user := types.AuthenticatedUser{
 			Email:      resp.Email,
 			IsLoggedIn: true,
