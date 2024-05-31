@@ -17,6 +17,10 @@ const (
 	sessionAccessTokenKey = "accessToken"
 )
 
+func HandleAccountSetupIndex(w http.ResponseWriter, r *http.Request) error {
+	return render(r, w, auth.AccountSetup())
+}
+
 func HandleLoginIndex(w http.ResponseWriter, r *http.Request) error {
 	return render(r, w, auth.Login())
 }

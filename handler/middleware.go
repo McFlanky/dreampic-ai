@@ -15,7 +15,7 @@ import (
 	"github.com/gorilla/sessions"
 )
 
-func WithoutAuth(next http.Handler) http.Handler {
+func WithAuth(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		if strings.Contains(r.URL.Path, "/public") {
 			next.ServeHTTP(w, r)
@@ -30,6 +30,28 @@ func WithoutAuth(next http.Handler) http.Handler {
 	}
 	return http.HandlerFunc(fn)
 }
+
+func WithAccountSetup(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		user := getAuthenticatedUser(r)
+		account, err := db.GetAccountByUserID(user.ID)
+		// User has not setup his account yet.
+		// Hence, redirect them to /account/setup
+		if err != nil {
+			if errors.Is(err, sql.ErrNoRows) {
+				http.Redirect(w, r, "/account/setup", http.StatusSeeOther)
+				return
+			}
+			next.ServeHTTP(w, r)
+			return
+		}
+		user.Account = account
+		ctx := context.WithValue(r.Context(), types.UserContextKey, user)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	}
+	return http.HandlerFunc(fn)
+}
+
 func WithUser(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		if strings.Contains(r.URL.Path, "/public") {
@@ -53,12 +75,6 @@ func WithUser(next http.Handler) http.Handler {
 			Email:      resp.Email,
 			IsLoggedIn: true,
 		}
-		account, err := db.GetAccountByUserID(user.ID)
-		if !errors.Is(err, sql.ErrNoRows) {
-			next.ServeHTTP(w, r)
-			return
-		}
-		user.Account = account
 		ctx := context.WithValue(r.Context(), types.UserContextKey, user)
 		next.ServeHTTP(w, r.WithContext(ctx))
 

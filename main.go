@@ -25,7 +25,6 @@ func main() {
 	router.Use(handler.WithUser)
 
 	router.Handle("/*", http.StripPrefix("/", http.FileServer(http.FS(FS))))
-	router.Get("/", handler.Make(handler.HandleHomeIndex))
 	router.Get("/login", handler.Make(handler.HandleLoginIndex))
 	router.Get("/login/provider/google", handler.Make(handler.HandleLoginWithGoogle))
 	router.Get("/signup", handler.Make(handler.HandleSignupIndex))
@@ -34,12 +33,14 @@ func main() {
 	router.Post("/login", handler.Make(handler.HandleLoginCreate))
 	router.Post("/signup", handler.Make(handler.HandleSignupCreate))
 
-	router.Group(func(auth chi.Router) {
-		auth.Use(handler.WithoutAuth)
-		auth.Get("/settings", handler.Make(handler.HandleSettingsIndex))
-	})
-
 	router.Get("/auth/callback", handler.Make(handler.HandleAuthCallback))
+	router.Get("/account/setup", handler.Make(handler.HandleAccountSetupIndex))
+
+	router.Group(func(auth chi.Router) {
+		auth.Use(handler.WithAuth, handler.WithAccountSetup)
+		auth.Get("/settings", handler.Make(handler.HandleSettingsIndex))
+		auth.Get("/", handler.Make(handler.HandleHomeIndex))
+	})
 
 	port := os.Getenv("HTTP_LISTEN_ADDR")
 	slog.Info("Starting server on ", "port", port)
