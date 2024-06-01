@@ -36,13 +36,14 @@ func main() {
 	router.Post("/login", handler.Make(handler.HandleLoginCreate))
 	router.Post("/signup", handler.Make(handler.HandleSignupCreate))
 
+	// With Auth ONLY
 	router.Group(func(auth chi.Router) {
 		auth.Use(handler.WithAuth)
 		auth.Get("/account/setup", handler.Make(handler.HandleAccountSetupIndex))
 		auth.Post("/account/setup", handler.Make(handler.HandleAccountSetupCreate))
 	})
 
-	// Authenticated routes
+	// With Auth & Account Setup
 	router.Group(func(auth chi.Router) {
 		auth.Use(handler.WithAuth, handler.WithAccountSetup)
 		auth.Get("/settings", handler.Make(handler.HandleSettingsIndex))
