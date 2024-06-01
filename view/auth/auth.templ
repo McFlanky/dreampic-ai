@@ -185,7 +185,7 @@ type ResetPasswordErrors struct {
 	NewPassword string
 }
 
-templ ResetPasswordSuccess(email string) {
+templ ResetPasswordInitiated(email string) {
 	<div>A password reset link has been sent to <span class="text-info font-semibold">{ email }</span></div>
 }
 
