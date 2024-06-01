@@ -42,6 +42,10 @@ func main() {
 		auth.Use(handler.WithAccountSetup)
 		auth.Get("/settings", handler.Make(handler.HandleSettingsIndex))
 		auth.Put("/settings/account/profile", handler.Make(handler.HandleSettingsUsernameUpdate))
+
+		auth.Get("/auth/reset-password", handler.Make(handler.HandleResetPasswordIndex))
+		auth.Put("/auth/reset-password", handler.Make(handler.HandleResetPasswordUpdate))
+		auth.Post("/auth/reset-password", handler.Make(handler.HandleResetPasswordCreate))
 	})
 
 	port := os.Getenv("HTTP_LISTEN_ADDR")
