@@ -10,6 +10,6 @@
 - Supabase (PostgreSQL)
 - Replicate
 - Stripe
-- Github Actions/Digital Ocean (CI/CD)## Dreampic AI
+- Github Actions/Digital Ocean (CI/CD)
  
 ### Golang & HTMX Fullstack AI Image Editor
