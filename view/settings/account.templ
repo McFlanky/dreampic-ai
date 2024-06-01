@@ -2,6 +2,7 @@ package settings
 
 import "github.com/McFlanky/dreampic-ai/view/layout"
 import "github.com/McFlanky/dreampic-ai/types"
+import "github.com/McFlanky/dreampic-ai/view/ui"
 
 type ProfileParams struct {
 	Username string
@@ -51,11 +52,7 @@ templ ProfileForm(params ProfileParams, errors ProfileErrors) {
 			<dt class="">Username</dt>
 			<dd class="sm:col-span-2 sm:mt-0">
 				if params.Success {
-					<div class="toast toast-top toast-end">
-						<div class="alert alert-success">
-							<span>Username updated successfully</span>
-						</div>
-					</div>
+					@ui.Toast("Username updated successfully")
 				}
 				<label class="form-control w-full max-w-xs">
 					<input
