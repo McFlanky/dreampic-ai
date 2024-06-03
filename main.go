@@ -21,6 +21,7 @@ func main() {
 	if err := initEverything(); err != nil {
 		log.Fatal(err)
 	}
+
 	router := chi.NewMux()
 	router.Use(handler.WithUser)
 
@@ -34,6 +35,7 @@ func main() {
 	router.Post("/logout", handler.Make(handler.HandleLogoutCreate))
 	router.Post("/login", handler.Make(handler.HandleLoginCreate))
 	router.Post("/signup", handler.Make(handler.HandleSignupCreate))
+	router.Post("/replicate/callback/{userID}/{batchID}", handler.Make(handler.HandleReplicateCallback))
 
 	// With Auth ONLY
 	router.Group(func(auth chi.Router) {

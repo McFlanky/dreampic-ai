@@ -3,6 +3,8 @@ package handler
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"log"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -13,6 +15,7 @@ import (
 	"github.com/McFlanky/dreampic-ai/view/generate"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"github.com/replicate/replicate-go"
 	"github.com/uptrace/bun"
 )
 
@@ -49,8 +52,19 @@ func HandleGenerateCreate(w http.ResponseWriter, r *http.Request) error {
 		return render(r, w, generate.Form(params, errors))
 	}
 
+	batchID := uuid.New()
+	genParams := GenerateImageParams{
+		Prompt:  params.Prompt,
+		Amount:  params.Amount,
+		UserID:  user.ID,
+		BatchID: batchID,
+	}
+
+	if err := generateImages(r.Context(), genParams); err != nil {
+		return err
+	}
+
 	err := db.Bun.RunInTx(r.Context(), &sql.TxOptions{}, func(ctx context.Context, tx bun.Tx) error {
-		batchID := uuid.New()
 		for i := 0; i < params.Amount; i++ {
 			img := types.Image{
 				Prompt:  params.Prompt,
@@ -81,4 +95,28 @@ func HandleGenerateImageStatus(w http.ResponseWriter, r *http.Request) error {
 	}
 	slog.Info("checking image status", "id", id)
 	return render(r, w, generate.GalleryImage(image))
+}
+
+type GenerateImageParams struct {
+	Prompt  string
+	Amount  int
+	BatchID uuid.UUID
+	UserID  uuid.UUID
+}
+
+func generateImages(ctx context.Context, params GenerateImageParams) error {
+	r8, err := replicate.NewClient(replicate.WithTokenFromEnv())
+	if err != nil {
+		log.Fatal(err)
+	}
+	input := replicate.PredictionInput{
+		"prompt":      params.Prompt,
+		"num_outputs": params.Amount,
+	}
+	webhook := replicate.Webhook{
+		URL:    fmt.Sprintf("https://webhook.site/b5a903c3-e4f6-4391-aff3-6ac7ee06071b/%s/%s", params.UserID, params.BatchID),
+		Events: []replicate.WebhookEventType{"start", "completed"},
+	}
+	_, err = r8.CreatePrediction(ctx, "ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4", input, &webhook, false)
+	return err
 }
