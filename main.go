@@ -24,8 +24,7 @@ func main() {
 	router := chi.NewMux()
 	router.Use(handler.WithUser)
 
-	router.Handle("/*", http.StripPrefix("/", http.FileServer(http.FS(FS))))
-	// GET
+	router.Handle("/*", public()) // GET
 	router.Get("/", handler.Make(handler.HandleHomeIndex))
 	router.Get("/login", handler.Make(handler.HandleLoginIndex))
 	router.Get("/login/provider/google", handler.Make(handler.HandleLoginWithGoogle))

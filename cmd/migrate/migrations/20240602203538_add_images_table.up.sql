@@ -6,6 +6,7 @@ CREATE TABLE
         prompt TEXT NOT NULL,
         deleted BOOLEAN NOT NULL DEFAULT 'false',
         image_location TEXT,
+        batch_id UUID NOT NULL,
         deleted_at TIMESTAMP,
         created_at TIMESTAMP NOT NULL DEFAULT NOW ()
     );
