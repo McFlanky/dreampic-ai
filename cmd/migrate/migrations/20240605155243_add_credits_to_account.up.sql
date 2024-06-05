@@ -1,0 +1,2 @@
+ALTER TABLE accounts
+ADD COLUMN credits INT DEFAULT 0;

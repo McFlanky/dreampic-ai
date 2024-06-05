@@ -18,7 +18,7 @@
 </div></label> <button class=\"btn btn-primary w-full mt-4\">Generate</button></div></form>
 <div class=\"grid grid-cols-4 p-4 gap-4 w-full\" id=\"gallery\">
 </div>
-<div class=\"aspect-sqaure rounded-xl cursor-pointer\"><img class=\"object-cover rounded-xl\" src=\"
+<div class=\"aspect-square rounded-xl cursor-pointer\"><img class=\"object-cover rounded-xl\" src=\"
 \"></div>
 <div class=\"bg-red-100 aspect-[2/3] rounded-xl flex justify-center items-center\"><div><i class=\"fa-solid fa-triangle-exclamation text-5xl font-black text-slate-600\"></i></div></div>
 <div hx-get=\"

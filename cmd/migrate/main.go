@@ -38,7 +38,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Point to your migration files. Here we're using local files, but it could be other sources.
+	// Point to your migration files. Here I'm using local files, but it could be other sources.
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://cmd/migrate/migrations", // source URL
 		"postgres",                      // database name
