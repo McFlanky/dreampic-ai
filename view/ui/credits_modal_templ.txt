@@ -1,3 +1,3 @@
 <dialog id=\"credits_modal\" class=\"modal modal-bottom sm:modal-middle\"><div class=\"modal-box\"><h3 class=\"font-bold text-lg\">Low Credits</h3><p class=\"py-4\">Buy more credits to keep using this feature!</p><p class=\"py-4\">You have: 
 /
- required</p><div class=\"modal-action\"><form method=\"dialog\"><button class=\"btn\">Close</button></form></div></div></dialog><script>\n        document.getElementById(\"credits_modal\").showModal();\n    </script>
+ required</p><div class=\"modal-action flex justify-between\"><a href=\"/buy-credits\" class=\"btn bg-gradient-to-r from-purple-400 via-purple-500 to-purple-800\">Buy Credits</a><form method=\"dialog\"><button class=\"btn\">Close</button></form></div></div></dialog><script>\n        document.getElementById(\"credits_modal\").showModal();\n    </script>
