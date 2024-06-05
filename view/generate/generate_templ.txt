@@ -1,0 +1,25 @@
+<div class=\"flex w-full h-[calc(100vh-69px)]\"><div class=\"w-[400px] border-r border-app p-4\">
+</div><div class=\"flex-1 bg-base-300\">
+</div></div>
+<form hx-post=\"/generate\" hx-swap=\"outerHTML\"><div><label class=\"form-control\"><div class=\"label\"><span class=\"label-text\">Enter your prompt</span></div><textarea value=\"
+\" name=\"prompt\" class=\"textarea textarea-bordered h-24\" placeholder=\"A woman in a white dress\">
+</textarea> 
+<div class=\"label\"><span class=\"label-text text-error\">
+</span></div>
+</label> <label class=\"form-control my-4\"><div class=\"label\"><span class=\"label-text\">How many images</span></div><div class=\"join\">
+<input class=\"join-item btn\" value=\"
+\" type=\"radio\" checked name=\"amount\" aria-label=\"
+\"> 
+<input class=\"join-item btn\" value=\"
+\" type=\"radio\" name=\"amount\" aria-label=\"
+\"> 
+<div class=\"label\"><span class=\"label-text text-error\">
+</span></div>
+</div></label> <button class=\"btn btn-primary w-full mt-4\">Generate</button></div></form>
+<div class=\"grid grid-cols-4 p-4 gap-4 w-full\" id=\"gallery\">
+</div>
+<div class=\"aspect-sqaure rounded-xl cursor-pointer\"><img class=\"object-cover rounded-xl\" src=\"
+\"></div>
+<div class=\"bg-red-100 aspect-[2/3] rounded-xl flex justify-center items-center\"><div><i class=\"fa-solid fa-triangle-exclamation text-5xl font-black text-slate-600\"></i></div></div>
+<div hx-get=\"
+\" hx-trigger=\"load delay:3s\" class=\"bg-red-100 aspect-[2/3] rounded-xl flex justify-center items-center\"><div><span class=\"loading loading-spinner loading-lg text-slate-600\"></span></div></div>
