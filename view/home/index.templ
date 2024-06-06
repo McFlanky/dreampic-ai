@@ -1,6 +1,13 @@
 package home
 
-import "github.com/McFlanky/dreampic-ai/view/layout"
+import (
+	"github.com/McFlanky/dreampic-ai/view/layout"
+	"github.com/McFlanky/dreampic-ai/view"
+)
+
+templ UserLikes(amount int) {
+	<div>{ view.String(amount) } user likes</div>
+}
 
 templ Index() {
 	@layout.App(true) {
@@ -11,7 +18,10 @@ templ Index() {
 			<h2 class="text-xl font-semibold mb-6">
 				this is some amazing AI application
 			</h2>
-			<a href="/generate" class="btn btn-primary">Generate Images Now!<i class="fa-solid fa-arrow-right"></i></a>
+			<a href="/generate" class="btn btn-primary mb-10">Generate Images Now!<i class="fa-solid fa-arrow-right"></i></a>
+			<div hx-get="/long-process" hx-trigger="load" hx-indicator="#spinner" class="mt-22 text-5xl">
+				<span id="spinner" class="loading loading-ring loading-lg htmx-indicator"></span>
+			</div>
 		</div>
 	}
 }

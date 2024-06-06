@@ -73,7 +73,6 @@ func HandleLoginCreate(w http.ResponseWriter, r *http.Request) error {
 		}))
 	}
 	return render(r, w, auth.MagicLinkSuccess(credentials.Email))
-	return hxRedirect(w, r, "/")
 }
 
 func HandleAuthCallback(w http.ResponseWriter, r *http.Request) error {
