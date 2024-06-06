@@ -1,10 +1,6 @@
 package handler
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -22,51 +18,6 @@ const (
 	sessionUserKey        = "user"
 	sessionAccessTokenKey = "accessToken"
 )
-
-func HandleResetPasswordIndex(w http.ResponseWriter, r *http.Request) error {
-	return render(r, w, auth.ResetPassword())
-}
-
-func HandleResetPasswordCreate(w http.ResponseWriter, r *http.Request) error {
-	user := getAuthenticatedUser(r)
-	params := map[string]any{
-		"email":      user.Email,
-		"redirectTo": "http://localhost:3000/auth/reset-password",
-	}
-	b, err := json.Marshal(params)
-	if err != nil {
-		return err
-	}
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s", sb.BaseAuthURL), bytes.NewReader(b))
-	req.Header.Set("apikey", os.Getenv("SUPABASE_SECRET"))
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-	if resp.StatusCode != http.StatusOK {
-		b, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		return fmt.Errorf("supabase password recovered responded with a non 200 status code %d => %s", resp.StatusCode, string(b))
-	}
-	return render(r, w, auth.ResetPasswordInitiated(user.Email))
-}
-
-func HandleResetPasswordUpdate(w http.ResponseWriter, r *http.Request) error {
-	user := getAuthenticatedUser(r)
-	params := map[string]any{
-		"password": r.FormValue("password"),
-	}
-	_, err := sb.Client.Auth.UpdateUser(r.Context(), user.AccessToken, params)
-	errors := auth.ResetPasswordErrors{
-		NewPassword: "Please enter a valid password",
-	}
-	if err != nil {
-		return render(r, w, auth.ResetPasswordForm(errors))
-	}
-	return hxRedirect(w, r, "/")
-}
 
 func HandleAccountSetupIndex(w http.ResponseWriter, r *http.Request) error {
 	return render(r, w, auth.AccountSetup())
@@ -102,33 +53,6 @@ func HandleSignupIndex(w http.ResponseWriter, r *http.Request) error {
 	return render(r, w, auth.Signup())
 }
 
-func HandleSignupCreate(w http.ResponseWriter, r *http.Request) error {
-	params := auth.SignupParams{
-		Email:           r.FormValue("email"),
-		Password:        r.FormValue("password"),
-		ConfirmPassword: r.FormValue("confirmPassword"),
-	}
-	errors := auth.SignupErrors{}
-	if ok := validate.New(&params, validate.Fields{
-		"Email":    validate.Rules(validate.Email),
-		"Password": validate.Rules(validate.Password),
-		"ConfirmPassword": validate.Rules(
-			validate.Equal(params.Password),
-			validate.Message("passwords do not match"),
-		),
-	}).Validate(&errors); !ok {
-		return render(r, w, auth.SignupForm(params, errors))
-	}
-	user, err := sb.Client.Auth.SignUp(r.Context(), supabase.UserCredentials{
-		Email:    params.Email,
-		Password: params.Password,
-	})
-	if err != nil {
-		return err
-	}
-	return render(r, w, auth.SignupSuccess(user.Email))
-}
-
 func HandleLoginWithGoogle(w http.ResponseWriter, r *http.Request) error {
 	resp, err := sb.Client.Auth.SignInWithProvider(supabase.ProviderSignInOptions{
 		Provider:   "google",
@@ -143,8 +67,7 @@ func HandleLoginWithGoogle(w http.ResponseWriter, r *http.Request) error {
 
 func HandleLoginCreate(w http.ResponseWriter, r *http.Request) error {
 	credentials := supabase.UserCredentials{
-		Email:    r.FormValue("email"),
-		Password: r.FormValue("password"),
+		Email: r.FormValue("email"),
 	}
 	resp, err := sb.Client.Auth.SignIn(r.Context(), credentials)
 	if err != nil {

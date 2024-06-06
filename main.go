@@ -25,7 +25,8 @@ func main() {
 	router := chi.NewMux()
 	router.Use(handler.WithUser)
 
-	router.Handle("/*", public()) // GET
+	router.Handle("/*", public())
+	// GET
 	router.Get("/", handler.Make(handler.HandleHomeIndex))
 	router.Get("/login", handler.Make(handler.HandleLoginIndex))
 	router.Get("/login/provider/google", handler.Make(handler.HandleLoginWithGoogle))
@@ -34,7 +35,6 @@ func main() {
 	// POST
 	router.Post("/logout", handler.Make(handler.HandleLogoutCreate))
 	router.Post("/login", handler.Make(handler.HandleLoginCreate))
-	router.Post("/signup", handler.Make(handler.HandleSignupCreate))
 	router.Post("/replicate/callback/{userID}/{batchID}", handler.Make(handler.HandleReplicateCallback))
 
 	// With Auth ONLY
@@ -49,17 +49,16 @@ func main() {
 		auth.Use(handler.WithAuth, handler.WithAccountSetup)
 
 		auth.Get("/settings", handler.Make(handler.HandleSettingsIndex))
-		auth.Get("/auth/reset-password", handler.Make(handler.HandleResetPasswordIndex))
 		auth.Get("/generate", handler.Make(handler.HandleGenerateIndex))
 		auth.Get("/generate/image/status/{id}", handler.Make(handler.HandleGenerateImageStatus))
+		auth.Get("/buy-credits", handler.Make(handler.HandleCreditsIndex))
+		auth.Get("/checkout/create/{productID}", handler.Make(handler.HandleStripeCheckoutCreate))
+		auth.Get("/checkout/success/{sessionID}", handler.Make(handler.HandleStripeCheckoutSuccess))
+		auth.Get("/checkout/cancel", handler.Make(handler.HandleStripeCheckoutCancel))
 
 		auth.Put("/settings/account/profile", handler.Make(handler.HandleSettingsUsernameUpdate))
-		auth.Put("/auth/reset-password", handler.Make(handler.HandleResetPasswordUpdate))
 
-		auth.Post("/auth/reset-password", handler.Make(handler.HandleResetPasswordCreate))
 		auth.Post("/generate", handler.Make(handler.HandleGenerateCreate))
-		auth.Get("/buy-credits", handler.Make(handler.HandleCreditsIndex))
-		auth.Get("/checkout/{productID}", handler.Make(handler.HandleStripeCheckoutCreate))
 	})
 
 	port := os.Getenv("HTTP_LISTEN_ADDR")

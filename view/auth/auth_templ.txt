@@ -12,13 +12,7 @@
 \" name=\"email\" required autocomplete=\"off\" placeholder=\"Type here\" class=\"input input-bordered w-full\"> 
 <div class=\"label\"><span class=\"label-text-alt text-error\">
 </span></div>
-</div><div class=\"w-full\"><div class=\"label\"><span class=\"label-text\">Password</span></div><input type=\"password\" name=\"password\" required autocomplete=\"off\" placeholder=\"Type here\" class=\"input input-bordered w-full\"> 
-<div class=\"label\"><span class=\"label-text-alt text-error\">
-</span></div>
-</div>
-<div class=\"text-sm text-error\">
-</div>
-<button type=\"submit\" class=\"btn btn-primary w-full\">Login <i class=\"fa-solid fa-arrow-right-to-bracket\"></i></button><div class=\"divider\">OR</div><a href=\"/login/provider/google\" class=\"btn btn-outline w-full\">Login with Google<i class=\"fa-brands fa-google\"></i></a></form>
+</div><button type=\"submit\" class=\"btn btn-primary w-full\">Login <i class=\"fa-solid fa-arrow-right-to-bracket\"></i></button><div class=\"divider\">OR</div><a href=\"/login/provider/google\" class=\"btn btn-outline w-full\">Login with Google<i class=\"fa-brands fa-google\"></i></a></form>
 <div>A confirmation email has been sent to: <span class=\"font-semibold text-success\">
 </span></div>
 <form hx-post=\"/signup\" hx-swap=\"outerHTML\" class=\"space-y-4\"><div class=\"w-full\"><div class=\"label\"><span class=\"label-text\">Email Address</span></div><input type=\"email\" value=\"
@@ -32,12 +26,4 @@
 <div class=\"label\"><span class=\"label-text-alt text-error\">
 </span></div>
 </div></form>
-<div class=\"max-w-2xl w-full mx-auto mt-8\"><div><h1 class=\"text-lg font-semibold border-b border-gray-700 pb-2\">Reset Password</h1><div class=\"py-6\"><div class=\"text-label mb-2\">Enter new password</div>
-</div></div></div>
-<div>A password reset link has been sent to <span class=\"text-info font-semibold\">
-</span></div>
-<form hx-put=\"/auth/reset-password\" hx-swap=\"outerHTML\"><div class=\"mb-4\"><input class=\"input input-bordered w-full max-w-sm\" name=\"password\" type=\"password\"> 
-<div class=\"text-sm text-error mt-1\">
-</div>
-</div><button class=\"btn btn-primary\">Update Password</button></form>
 <script>\n\t\tvar url = window.location.href;\n\t\tvar newURL = url.replace(\"#\", \"?\");\n\t\twindow.location = newURL;\n\t</script>
