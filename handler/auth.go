@@ -49,10 +49,6 @@ func HandleLoginIndex(w http.ResponseWriter, r *http.Request) error {
 	return render(r, w, auth.Login())
 }
 
-func HandleSignupIndex(w http.ResponseWriter, r *http.Request) error {
-	return render(r, w, auth.Signup())
-}
-
 func HandleLoginWithGoogle(w http.ResponseWriter, r *http.Request) error {
 	resp, err := sb.Client.Auth.SignInWithProvider(supabase.ProviderSignInOptions{
 		Provider:   "google",
@@ -69,22 +65,14 @@ func HandleLoginCreate(w http.ResponseWriter, r *http.Request) error {
 	credentials := supabase.UserCredentials{
 		Email: r.FormValue("email"),
 	}
-	resp, err := sb.Client.Auth.SignIn(r.Context(), credentials)
+	err := sb.Client.Auth.SendMagicLink(r.Context(), credentials.Email)
 	if err != nil {
 		slog.Error("login error", "err", err)
 		return render(r, w, auth.LoginForm(credentials, auth.LoginErrors{
-			InvalidCredentials: "The credentials you have entered are invalid",
+			InvalidCredentials: err.Error(),
 		}))
 	}
-	store := sessions.NewCookieStore([]byte(os.Getenv("SESSION_SECRET")))
-	session, _ := store.Get(r, sessionUserKey)
-	session.Values["accessToken"] = resp.AccessToken
-	if err := session.Save(r, w); err != nil {
-		return err
-	}
-	if err := setAuthSession(w, r, resp.AccessToken); err != nil {
-		return err
-	}
+	return render(r, w, auth.MagicLinkSuccess(credentials.Email))
 	return hxRedirect(w, r, "/")
 }
 

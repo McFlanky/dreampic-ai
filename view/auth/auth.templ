@@ -51,17 +51,6 @@ templ Login() {
 	}
 }
 
-templ Signup() {
-	@layout.App(false) {
-		<div class="flex justify-center mt-[calc(100vh-100vh+8rem)]">
-			<div class="max-w-md w-full bg-base-300 py-12 px-8 rounded-xl">
-				<h1 class="text-center text-xl font-black mb-10">Signup to Dreampic AI</h1>
-				@SignupForm(SignupParams{}, SignupErrors{})
-			</div>
-		</div>
-	}
-}
-
 type LoginErrors struct {
 	Email              string
 	Password           string
@@ -91,62 +80,8 @@ templ LoginForm(creds supabase.UserCredentials, errors LoginErrors) {
 	</form>
 }
 
-templ SignupSuccess(email string) {
-	<div>A confirmation email has been sent to: <span class="font-semibold text-success">{ email }</span></div>
-}
-
-type SignupParams struct {
-	Email           string
-	Password        string
-	ConfirmPassword string
-}
-
-type SignupErrors struct {
-	Email           string
-	Password        string
-	ConfirmPassword string
-}
-
-templ SignupForm(params SignupParams, errors SignupErrors) {
-	<form
-		hx-post="/signup"
-		hx-swap="outerHTML"
-		class="space-y-4"
-	>
-		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Email Address</span>
-			</div>
-			<input type="email" value={ params.Email } name="email" required autocomplete="off" placeholder="Type here" class="input input-bordered w-full"/>
-			if len(errors.Email) > 0 {
-				<div class="label">
-					<span class="label-text-alt text-error">{ errors.Email }</span>
-				</div>
-			}
-		</div>
-		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Password</span>
-			</div>
-			<input type="password" name="password" required autocomplete="off" class="input input-bordered w-full"/>
-			if len(errors.Password) > 0 {
-				<div class="label">
-					<span class="label-text-alt text-error">{ errors.Password }</span>
-				</div>
-			}
-		</div>
-		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Confirm Password</span>
-			</div>
-			<input type="password" name="confirmPassword" required autocomplete="off" class="input input-bordered w-full"/>
-			if len(errors.Password) > 0 {
-				<div class="label">
-					<span class="label-text-alt text-error">{ errors.ConfirmPassword }</span>
-				</div>
-			}
-		</div>
-	</form>
+templ MagicLinkSuccess(email string) {
+	<div>An email to log in has been sent <span class="text-info">{ email }</span></div>
 }
 
 templ CallbackScript() {

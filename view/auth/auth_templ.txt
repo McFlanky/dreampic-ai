@@ -6,24 +6,11 @@
 </div></label> <button class=\"btn btn-primary\">Setup account<i class=\"fa-solid fa-arrow-right\"></i></button></form>
 <div class=\"flex justify-center mt-[calc(100vh-100vh+8rem)]\"><div class=\"max-w-md w-full bg-base-300 py-12 px-8 rounded-xl\"><h1 class=\"text-center text-xl font-black mb-10\">Login to Dreampic AI</h1>
 </div></div>
-<div class=\"flex justify-center mt-[calc(100vh-100vh+8rem)]\"><div class=\"max-w-md w-full bg-base-300 py-12 px-8 rounded-xl\"><h1 class=\"text-center text-xl font-black mb-10\">Signup to Dreampic AI</h1>
-</div></div>
 <form hx-post=\"/login\" hx-swap=\"outerHTML\" class=\"space-y-4\"><div class=\"w-full\"><div class=\"label\"><span class=\"label-text\">Email Address</span></div><input type=\"email\" value=\"
 \" name=\"email\" required autocomplete=\"off\" placeholder=\"Type here\" class=\"input input-bordered w-full\"> 
 <div class=\"label\"><span class=\"label-text-alt text-error\">
 </span></div>
 </div><button type=\"submit\" class=\"btn btn-primary w-full\">Login <i class=\"fa-solid fa-arrow-right-to-bracket\"></i></button><div class=\"divider\">OR</div><a href=\"/login/provider/google\" class=\"btn btn-outline w-full\">Login with Google<i class=\"fa-brands fa-google\"></i></a></form>
-<div>A confirmation email has been sent to: <span class=\"font-semibold text-success\">
+<div>An email to log in has been sent <span class=\"text-info\">
 </span></div>
-<form hx-post=\"/signup\" hx-swap=\"outerHTML\" class=\"space-y-4\"><div class=\"w-full\"><div class=\"label\"><span class=\"label-text\">Email Address</span></div><input type=\"email\" value=\"
-\" name=\"email\" required autocomplete=\"off\" placeholder=\"Type here\" class=\"input input-bordered w-full\"> 
-<div class=\"label\"><span class=\"label-text-alt text-error\">
-</span></div>
-</div><div class=\"w-full\"><div class=\"label\"><span class=\"label-text\">Password</span></div><input type=\"password\" name=\"password\" required autocomplete=\"off\" class=\"input input-bordered w-full\"> 
-<div class=\"label\"><span class=\"label-text-alt text-error\">
-</span></div>
-</div><div class=\"w-full\"><div class=\"label\"><span class=\"label-text\">Confirm Password</span></div><input type=\"password\" name=\"confirmPassword\" required autocomplete=\"off\" class=\"input input-bordered w-full\"> 
-<div class=\"label\"><span class=\"label-text-alt text-error\">
-</span></div>
-</div></form>
 <script>\n\t\tvar url = window.location.href;\n\t\tvar newURL = url.replace(\"#\", \"?\");\n\t\twindow.location = newURL;\n\t</script>
